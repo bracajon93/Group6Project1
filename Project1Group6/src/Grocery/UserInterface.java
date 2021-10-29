@@ -89,7 +89,7 @@ public class UserInterface {
         } while (true);
     }
     
-    public Calendar getDate() {
+    public Calendar getDate(String prompt) {
         do {
             try {
                 Calendar date = new GregorianCalendar();
@@ -171,6 +171,7 @@ public class UserInterface {
             	remove_member();
                 break;
             case ADD_PRODUCT:
+            	add_product();
                 break;
             case CHECK_OUT:
                 break;
@@ -202,6 +203,24 @@ public class UserInterface {
     
 
 
+	private void add_product() {
+		System.out.println("Enter the name of the product:");
+        String name = scnr.nextLine();
+
+        System.out.println("Enter the quantity (int) of the product:");
+        int quantity = scnr.nextInt();
+
+        System.out.println("Enter the price (can be a floating point number) of the product:");
+        double price = scnr.nextDouble();
+
+        System.out.println("Enter the minimum quantity for the product before it is automatically reordered:");
+        int reorderLevel = scnr.nextInt();
+        Product result = Grocery.addProduct(name,  quantity, price, reorderLevel);
+        System.out.println("New product " + result.getName() + " added successfully.");
+        
+	}
+
+
 	private void add_member() {
 		Member result;
     	System.out.println("Enter the name of the new member:");
@@ -213,20 +232,24 @@ public class UserInterface {
 		System.out.println("Enter the phone number of the new member:");
 		long phoneNumber = scnr.nextLong();
 		
-		System.out.println("Enter the date joined of the new member:");
-		Calendar dateJoined = getDate();
+		Calendar dateJoined = getDate("Enter the date joined of the new member:");
 		
 		System.out.println("Enter the fee paid for the new member:");
 		double feePaid = scnr.nextDouble();
 		result = Grocery.addMember(name, address, phoneNumber, dateJoined,
 				feePaid);
-		System.out.println(result);
+		System.out.println("New member " + result.getName() + " added successfully.");
+		System.out.println("Member ID is " + result.getID());
 		
 	}
 	
 	private void remove_member() {
 		System.out.println("Enter the Member ID to be remove:");
 		int searchMemberID = scnr.nextInt();
+		String result = Grocery.removeMember(searchMemberID);
+		System.out.println(result);
+		
+		
 		
 	}
 

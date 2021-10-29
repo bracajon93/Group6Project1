@@ -33,6 +33,14 @@ public class Member {
 	public static void save(ObjectOutputStream output) throws IOException {
         output.writeObject(idCounter);
     }
+	
+	public int getID() {
+		return memberID;
+	}
+
+	public String getName() {
+		return name;
+	}
 
 
 }

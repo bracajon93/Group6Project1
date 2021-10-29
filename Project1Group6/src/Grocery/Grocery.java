@@ -5,10 +5,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Calendar;
 
 
-public class Grocery {
+public class Grocery implements Serializable{
 	
 	private static Grocery grocery;
 	
@@ -28,6 +29,24 @@ public class Grocery {
 				feePaid);
 		if(MemberList.insertMember(member)) {
 			return (member);
+		}
+		return null;
+	}
+	
+	public static String removeMember(int searchMemberID) {
+			Member member = MemberList.retrieveMember(searchMemberID);
+			if (member!= null) {
+				MemberList.removeMember(member);
+				return("Member Removed Successfully!");
+		}else {
+			return("Member Not Found.");
+		}
+	}
+	
+	public static Product addProduct(String name,  int quantity, double price, int reorderLevel){
+		Product product = new Product(name, quantity, price, reorderLevel);
+		if(ProductList.insertProduct(product)) {
+			return(product);
 		}
 		return null;
 	}
@@ -61,5 +80,6 @@ public class Grocery {
             return null;
         }
     }
+
 
 }
