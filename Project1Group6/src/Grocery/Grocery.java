@@ -51,6 +51,15 @@ public class Grocery implements Serializable{
 		return null;
 	}
 	
+	public static Member searchMember(String searchMemberString) {
+		Member member = MemberList.retrieveMember(searchMemberString);
+		if (member!= null) {
+			return member;
+		}else {
+			return(null);
+		}
+	}
+	
 	public static boolean save() {
         try {
             FileOutputStream file = new FileOutputStream("GroceryData");

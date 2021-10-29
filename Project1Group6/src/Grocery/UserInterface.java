@@ -149,8 +149,8 @@ public class UserInterface {
         System.out.println(CHECK_OUT + " to  check out members' items ");
         System.out.println(PROCESS_SHIPMENT + " to process a shipment ");
         System.out.println(CHANGE_PRICE + " to  change the price of a product");
-        System.out.println(PRODUCT_INFO + " to display product details");
-        System.out.println(MEMBER_INFO + " to  display member details");
+        System.out.println(PRODUCT_INFO + " to search for a product");
+        System.out.println(MEMBER_INFO + " to  search for a member");
         System.out.println(PRINT_TRANSACTIONS + " to print members transactions give to date inputs");
         System.out.println(OUTSTANDING_ORDERS + " to  display any outstanding orders");
         System.out.println(SHOW_MEMBERS + " to list all the members");
@@ -174,6 +174,7 @@ public class UserInterface {
             	add_product();
                 break;
             case CHECK_OUT:
+            	check_out();
                 break;
             case PROCESS_SHIPMENT:
                 break;
@@ -181,16 +182,22 @@ public class UserInterface {
             	change_price();
                 break;
             case PRODUCT_INFO:
+            	product_info();
                 break;
             case MEMBER_INFO:
+            	member_info();
                 break;
             case PRINT_TRANSACTIONS:
+            	print_transactions();
                 break;
             case OUTSTANDING_ORDERS:
+            	outstanding_orders();
                 break;
             case SHOW_MEMBERS:
+            	show_members();
                 break;
             case SHOW_PRODUCTS:
+            	show_products();
                 break;
             case SAVE:
                 save();
@@ -202,6 +209,40 @@ public class UserInterface {
         }
     }
     
+
+
+	private void show_products() {
+	}
+
+
+	private void show_members() {
+	}
+
+
+	private void outstanding_orders() {
+	}
+
+
+	private void print_transactions() {
+	}
+
+
+	private void member_info() {
+		String searchMemberString = getToken("Search for : ");
+		Member member = Grocery.searchMember(searchMemberString);
+		if(member != null) {
+			System.out.println(member.toString());
+		}
+		
+	}
+
+
+	private void check_out() {
+	}
+
+
+	private void product_info() {
+	}
 
 
 	private void change_price() {

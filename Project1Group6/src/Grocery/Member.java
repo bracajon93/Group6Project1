@@ -41,6 +41,15 @@ public class Member {
 	public String getName() {
 		return name;
 	}
+	
+	@Override
+	public String toString() {
+		String memberString = "";
+		memberString += "Member's address: " + address;
+		memberString += " , fee paid: " + feePaid;
+		memberString += ", member ID: " + Integer.toString(memberID);
+		return memberString;
+	}
 
 
 }
