@@ -17,6 +17,8 @@ public class UserInterface {
 	private static UserInterface userInterface;
     private BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     private static Grocery grocery;
+    Scanner scnr = new Scanner(System.in);
+	private String prompt;
     private static final int EXIT = 0;
     private static final int ADD_MEMBER = 1;
     private static final int REMOVE_MEMBER = 2;
@@ -87,7 +89,7 @@ public class UserInterface {
         } while (true);
     }
     
-    public Calendar getDate(String prompt) {
+    public Calendar getDate() {
         do {
             try {
                 Calendar date = new GregorianCalendar();
@@ -166,6 +168,7 @@ public class UserInterface {
             	add_member();
                 break;
             case REMOVE_MEMBER:
+            	remove_member();
                 break;
             case ADD_PRODUCT:
                 break;
@@ -197,25 +200,33 @@ public class UserInterface {
         }
     }
     
-    private void add_member() {
-    	Scanner scnr = new Scanner(System.in);
+
+
+	private void add_member() {
+		Member result;
     	System.out.println("Enter the name of the new member:");
 		String name = scnr.nextLine();
-
+		
 		System.out.println("Enter the address of the new member:");
 		String address = scnr.nextLine();
-
+		
 		System.out.println("Enter the phone number of the new member:");
-		int phoneNumber = scnr.nextInt();
-
+		long phoneNumber = scnr.nextLong();
+		
 		System.out.println("Enter the date joined of the new member:");
-		Calendar dateJoined = getDate("Please enter the date: ");
+		Calendar dateJoined = getDate();
 		
 		System.out.println("Enter the fee paid for the new member:");
 		double feePaid = scnr.nextDouble();
-		Member result = Grocery.addMember(name, address, phoneNumber, dateJoined,
+		result = Grocery.addMember(name, address, phoneNumber, dateJoined,
 				feePaid);
 		System.out.println(result);
+		
+	}
+	
+	private void remove_member() {
+		System.out.println("Enter the Member ID to be remove:");
+		int searchMemberID = scnr.nextInt();
 		
 	}
 

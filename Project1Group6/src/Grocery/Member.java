@@ -8,13 +8,13 @@ import java.util.Calendar;
 public class Member {
 	String name;
 	String address;
-	int phoneNumber;
+	long phoneNumber;
 	Calendar dateJoined;
 	Double feePaid;
 	int memberID;
 	private static int idCounter = 456;
 
-	public Member(String name, String address, int phoneNumber,
+	public Member(String name, String address, long phoneNumber,
 			Calendar dateJoined, Double feePaid){
 		this.name = name;
 		this.address = address;

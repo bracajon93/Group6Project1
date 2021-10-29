@@ -22,7 +22,7 @@ public class Grocery {
             return grocery;
         }
     }
-	public static Member addMember(String name, String address, int phoneNumber,
+	public static Member addMember(String name, String address, long phoneNumber,
 			Calendar dateJoined, Double feePaid) {
 		Member member = new Member(name, address, phoneNumber, dateJoined,
 				feePaid);
