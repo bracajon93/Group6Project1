@@ -8,14 +8,14 @@ import java.util.Calendar;
 public class Member {
 	String name;
 	String address;
-	long phoneNumber;
+	String phoneNumber;
 	Calendar dateJoined;
-	Double feePaid;
+	String feePaid;
 	int memberID;
 	private static int idCounter = 456;
 
-	public Member(String name, String address, long phoneNumber,
-			Calendar dateJoined, Double feePaid){
+	public Member(String name, String address, String phoneNumber,
+			Calendar dateJoined, String feePaid){
 		this.name = name;
 		this.address = address;
 		this.phoneNumber = phoneNumber;

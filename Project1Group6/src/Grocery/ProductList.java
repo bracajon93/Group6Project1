@@ -1,6 +1,7 @@
 package Grocery;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -27,6 +28,31 @@ public class ProductList {
 	public static boolean insertProduct(Product product) {
 		productList.add(product);
 		return true;
+	}
+	
+	public static Product retrieveProduct(int searchProductID) {
+		for (Iterator<Product> iterator = productList.iterator(); iterator.hasNext();) {
+            Product product = iterator.next();
+            if (product.getID() == (searchProductID)) {
+                return product;
+            }
+        }
+        return null;
+	}
+
+	public static Product updatePrice(int searchProductID, String updatePrice) {
+		for (Iterator<Product> iterator = productList.iterator(); iterator.hasNext();) {
+            Product product = iterator.next();
+            if (product.getID() == (searchProductID)) {
+                product.setPrice((String)updatePrice);
+                return  product;
+            }
+		}
+		return null;
+	}
+
+	public static void updatePrice(int searchProductID) {
+		
 	}
 }
 
