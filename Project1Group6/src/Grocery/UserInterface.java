@@ -149,8 +149,8 @@ public class UserInterface {
         System.out.println(CHECK_OUT + " to  check out members' items ");
         System.out.println(PROCESS_SHIPMENT + " to process a shipment ");
         System.out.println(CHANGE_PRICE + " to  change the price of a product");
-        System.out.println(PRODUCT_INFO + " to display product details");
-        System.out.println(MEMBER_INFO + " to  display member details");
+        System.out.println(PRODUCT_INFO + " to search for a product");
+        System.out.println(MEMBER_INFO + " to  search for a member");
         System.out.println(PRINT_TRANSACTIONS + " to print members transactions give to date inputs");
         System.out.println(OUTSTANDING_ORDERS + " to  display any outstanding orders");
         System.out.println(SHOW_MEMBERS + " to list all the members");
@@ -174,22 +174,30 @@ public class UserInterface {
             	add_product();
                 break;
             case CHECK_OUT:
+            	check_out();
                 break;
             case PROCESS_SHIPMENT:
                 break;
             case CHANGE_PRICE:
+            	change_price();
                 break;
             case PRODUCT_INFO:
+            	product_info();
                 break;
             case MEMBER_INFO:
+            	member_info();
                 break;
             case PRINT_TRANSACTIONS:
+            	print_transactions();
                 break;
             case OUTSTANDING_ORDERS:
+            	outstanding_orders();
                 break;
             case SHOW_MEMBERS:
+            	show_members();
                 break;
             case SHOW_PRODUCTS:
+            	show_products();
                 break;
             case SAVE:
                 save();
@@ -203,18 +211,60 @@ public class UserInterface {
     
 
 
+	private void show_products() {
+	}
+
+
+	private void show_members() {
+	}
+
+
+	private void outstanding_orders() {
+	}
+
+
+	private void print_transactions() {
+	}
+
+
+	private void member_info() {
+		String searchMemberString = getToken("Search for : ");
+		Member member = Grocery.searchMember(searchMemberString);
+		if(member != null) {
+			System.out.println(member.toString());
+		}
+		
+	}
+
+
+	private void check_out() {
+	}
+
+
+	private void product_info() {
+	}
+
+
+	private void change_price() {
+		System.out.println("Enter the ID of the product :");
+		int searchProductID = scnr.nextInt();
+		boolean result = Grocery.searchItem(searchProductID);
+		if (result) {
+			String newPrice = getToken("Enter new price: ");
+			Product product = ProductList.updatePrice(searchProductID, newPrice);
+			System.out.println("Product " + product.getName() + " price updated to: " + product.getPrice());
+			
+		}else {
+		System.out.println("Item not found.");
+		}
+	}
+
+
 	private void add_product() {
-		System.out.println("Enter the name of the product:");
-        String name = scnr.nextLine();
-
-        System.out.println("Enter the quantity (int) of the product:");
-        int quantity = scnr.nextInt();
-
-        System.out.println("Enter the price (can be a floating point number) of the product:");
-        double price = scnr.nextDouble();
-
-        System.out.println("Enter the minimum quantity for the product before it is automatically reordered:");
-        int reorderLevel = scnr.nextInt();
+        String name = getToken("Enter the name of the product:");
+        String quantity = getToken("Enter the quantity (int) of the product:");
+        String price = getToken("Enter the price (can be a floating point number) of the product:");
+        String reorderLevel = getToken("Enter the minimum quantity for the product before it is automatically reordered:");
         Product result = Grocery.addProduct(name,  quantity, price, reorderLevel);
         System.out.println("New product " + result.getName() + " added successfully.");
         
@@ -223,19 +273,11 @@ public class UserInterface {
 
 	private void add_member() {
 		Member result;
-    	System.out.println("Enter the name of the new member:");
-		String name = scnr.nextLine();
-		
-		System.out.println("Enter the address of the new member:");
-		String address = scnr.nextLine();
-		
-		System.out.println("Enter the phone number of the new member:");
-		long phoneNumber = scnr.nextLong();
-		
-		Calendar dateJoined = getDate("Enter the date joined of the new member:");
-		
-		System.out.println("Enter the fee paid for the new member:");
-		double feePaid = scnr.nextDouble();
+		String name = getToken("Enter members name: " );
+		String address = getToken("Enter the address of the new member: ");
+		String phoneNumber = getToken("Enter the phone number of the new member: ");
+		Calendar dateJoined = getDate("Enter the date joined of the new member: ");
+		String feePaid = getToken("Enter the fee paid for the new member:");
 		result = Grocery.addMember(name, address, phoneNumber, dateJoined,
 				feePaid);
 		System.out.println("New member " + result.getName() + " added successfully.");
@@ -248,10 +290,11 @@ public class UserInterface {
 		int searchMemberID = scnr.nextInt();
 		String result = Grocery.removeMember(searchMemberID);
 		System.out.println(result);
-		
-		
-		
 	}
+		
+		
+		
+
 
 
 	public static void main(String[] args) {

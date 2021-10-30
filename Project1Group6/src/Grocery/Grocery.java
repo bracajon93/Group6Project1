@@ -23,8 +23,8 @@ public class Grocery implements Serializable{
             return grocery;
         }
     }
-	public static Member addMember(String name, String address, long phoneNumber,
-			Calendar dateJoined, Double feePaid) {
+	public static Member addMember(String name, String address, String phoneNumber,
+			Calendar dateJoined, String feePaid) {
 		Member member = new Member(name, address, phoneNumber, dateJoined,
 				feePaid);
 		if(MemberList.insertMember(member)) {
@@ -43,12 +43,21 @@ public class Grocery implements Serializable{
 		}
 	}
 	
-	public static Product addProduct(String name,  int quantity, double price, int reorderLevel){
+	public static Product addProduct(String name,  String quantity, String price, String reorderLevel){
 		Product product = new Product(name, quantity, price, reorderLevel);
 		if(ProductList.insertProduct(product)) {
 			return(product);
 		}
 		return null;
+	}
+	
+	public static Member searchMember(String searchMemberString) {
+		Member member = MemberList.retrieveMember(searchMemberString);
+		if (member!= null) {
+			return member;
+		}else {
+			return(null);
+		}
 	}
 	
 	public static boolean save() {
@@ -80,6 +89,19 @@ public class Grocery implements Serializable{
             return null;
         }
     }
+
+	public static String changePrice(Product product) {
+		return null;
+	}
+
+	public static boolean searchItem(int searchProductID) {
+		Product product = ProductList.retrieveProduct(searchProductID);
+		if (product!= null) {
+			return(true);
+	}else {
+		return(false);
+	}
+	}
 
 
 }

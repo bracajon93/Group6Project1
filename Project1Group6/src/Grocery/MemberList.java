@@ -36,6 +36,17 @@ public class MemberList {
         }
         return null;
 	}
+	
+	public static Member retrieveMember(String searchMemberString) {
+		for (Iterator<Member> iterator = memberList.iterator(); iterator.hasNext();) {
+            Member member = iterator.next();
+            while (member.getName().contains(searchMemberString)) {
+                return member;
+            }
+            
+        }
+		return null;
+	}
 
 	public static void removeMember(Member member) {
 		
