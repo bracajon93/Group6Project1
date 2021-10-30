@@ -1,32 +1,36 @@
 package Grocery;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
-
 /**
  * This class is a singleton, with an arrayList that holds all the instances of
  * Product for our co-op system
  */
-public class productList {
+public class ProductList {
 
-    Scanner scnr = new Scanner(System.in);
+	private static List<Product> productList = new LinkedList<Product>();
+	
+	private static ProductList instance = null;
 
-    private static productList instance = null;
+	private ProductList() {
+	}
 
-    private ArrayList<Product> listOfProducts = new ArrayList<Product>();
-
-    private productList() {
-
-    }
-
-    public static productList getInstance() {
+	public static ProductList getInstance() {
         if (instance == null) {
-            instance = new productList();
+            instance = new ProductList();
         }
         return instance;
     }
 
-    public void addProduct() {
+	public static boolean insertProduct(Product product) {
+		productList.add(product);
+		return true;
+	}
+}
+
+    /*public void addProduct() {
         Product tempProduct = new Product();
         instance.listOfProducts.add(tempProduct);
     }
@@ -39,8 +43,9 @@ public class productList {
     public ArrayList<Product> getListOfProducts() {
         return instance.listOfProducts;
     }
+    */
 
-    public void searchProducts(String name) {
+    /*public void searchProducts(String name) {
         productList temp = productList.getInstance();
         System.out.println("Searching for: " + name);
         for (Product product : temp.getListOfProducts()) {
@@ -51,11 +56,11 @@ public class productList {
             }
 
         }
-    }
+        */
 
     /* Given an id, change the price of the product with this id. then print the name of product and 
     its new price */
-    public void changePriceUsingId(int id) {
+    /*public void changePriceUsingId(int id) {
         productList temp = productList.getInstance();
         for (Product product : temp.getListOfProducts()) {
             if (product.getId() == id) {
@@ -66,6 +71,6 @@ public class productList {
             }
         }
     }
+    */
 
 
-}
