@@ -1,12 +1,13 @@
 package Grocery;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 
 public class MemberList {
-	private static List<Member> memberList = new LinkedList<Member>();
+	private static ArrayList<Member> memberList = new ArrayList<Member>();
 	
 	private static MemberList instance = null;
 
@@ -46,6 +47,10 @@ public class MemberList {
             
         }
 		return null;
+	}
+	
+	public ArrayList<Member> getMembers() {
+		return this.memberList;
 	}
 
 	public static void removeMember(Member member) {

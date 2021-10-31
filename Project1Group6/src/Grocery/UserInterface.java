@@ -211,11 +211,23 @@ public class UserInterface {
     
 
 
-	private void show_products() {
-	}
+    private void show_products() {
+        grocery.getProductList();
+        for (Product product : ProductList.getInstance().getProductList()) {
+            System.out.println("Product: " + product.getName() + "\nID: " + product.getID() + "\nQuantity: "
+                    + product.getQuantity() + "\nPrice: " + product.getPrice() + "\nReorder level: "
+                    + product.getReorderLevel());
+            System.out.println(); /* don't delete */
+        }
+    }
 
 
 	private void show_members() {
+		grocery.getMemberList();
+        for (Member member : MemberList.getInstance().getMembers()) {
+            System.out.println("Name: " + member.getName() + "\nDate joined: " + member.dateJoined.toString()
+                    + "\nAddress: " + member.address + "\nPhone number: " + member.phoneNumber);
+        }
 	}
 
 
@@ -229,9 +241,12 @@ public class UserInterface {
 
 	private void member_info() {
 		String searchMemberString = getToken("Search for : ");
-		Member member = Grocery.searchMember(searchMemberString);
-		if(member != null) {
-			System.out.println(member.toString());
+		grocery.getMemberList();
+        for (Member member : MemberList.getInstance().getMembers()) {
+            if (member.getName().startsWith(searchMemberString)) {
+                System.out.println("Name: " + member.getName() + "\nDate joined: " + member.dateJoined.toString()
+                        + "\nAddress: " + member.address + "\nPhone number: " + member.phoneNumber);
+            }
 		}
 		
 	}
@@ -242,6 +257,17 @@ public class UserInterface {
 
 
 	private void product_info() {
+		System.out.println("What should we be searching for?");
+        String tempString = scnr.nextLine();
+        grocery.getProductList();
+        for (Product product : ProductList.getInstance().getProductList()) {
+            if (product.getName().startsWith(tempString)) {
+                System.out.println("Product: " + product.getName() + "\nID: " + product.getID() + "\nQuantity: "
+                        + product.getQuantity() + "\nPrice: " + product.getPrice() + "\nReorder level: "
+                        + product.getReorderLevel());
+                System.out.println();
+            }
+        }
 	}
 
 
@@ -259,7 +285,7 @@ public class UserInterface {
 		}
 	}
 
-
+	//case 3
 	private void add_product() {
         String name = getToken("Enter the name of the product:");
         String quantity = getToken("Enter the quantity (int) of the product:");
@@ -270,7 +296,7 @@ public class UserInterface {
         
 	}
 
-
+	//case 1
 	private void add_member() {
 		Member result;
 		String name = getToken("Enter members name: " );
@@ -285,6 +311,7 @@ public class UserInterface {
 		
 	}
 	
+	//case 2
 	private void remove_member() {
 		System.out.println("Enter the Member ID to be remove:");
 		int searchMemberID = scnr.nextInt();

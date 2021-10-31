@@ -12,9 +12,19 @@ import java.util.Calendar;
 public class Grocery implements Serializable{
 	
 	private static Grocery grocery;
+	private ProductList productList;
+	private MemberList memberList;
 	
 	private Grocery() {
     }
+	
+	public MemberList getMemberList() {
+		return memberList;
+	}
+
+	public ProductList getProductList() {
+		return productList;
+	}
 	
 	public static Grocery instance() {
         if (grocery == null) {

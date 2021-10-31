@@ -42,4 +42,13 @@ public class Product {
 	public String getPrice() {
 		return price;
 	}
+
+	public String getQuantity() {
+		return quantity;
+	}
+
+	public String getReorderLevel() {
+		return reorderLevel;
+	}
+	
 }
