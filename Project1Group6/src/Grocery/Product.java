@@ -9,7 +9,7 @@ public class Product {
 
     private String name;
     private int id;
-    private static int idCount = 999; /* keeps track of where our id is with every instance created of product */
+    private static int idCount = 0; /* keeps track of where our id is with every instance created of product */
     private String quantity;
     private String price;
     private String reorderLevel;
@@ -45,6 +45,10 @@ public class Product {
 
 	public String getQuantity() {
 		return quantity;
+	}
+
+	public void setQuantity(String newQuantity){
+		this.quantity = newQuantity;
 	}
 
 	public String getReorderLevel() {

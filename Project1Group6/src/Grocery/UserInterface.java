@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
@@ -253,6 +254,50 @@ public class UserInterface {
 
 
 	private void check_out() {
+        String tempInput;
+        int tempId;
+        int tempQuantity;
+        ArrayList<Integer> ids = new ArrayList<>();
+        ArrayList<Integer> quantities =  new ArrayList<>();
+        double price = 0;
+        double total = 0;
+
+
+        
+        tempInput = "Y";
+        while (!tempInput.equals("No") || !tempInput.equals("N")) {
+            
+            System.out.print("What is the id of the product: ");
+            tempId = scnr.nextInt();
+
+            grocery.getProductList();
+            for (Product product : ProductList.getInstance().getProductList()) {
+                if (product.getID() == tempId) {
+                    ids.add(tempId) ;
+                    System.out.println("How many " + product.getName() + " do you have?");
+                    tempQuantity = scnr.nextInt();
+                    quantities.add(tempQuantity) ;
+                    total += tempQuantity * Double.parseDouble(product.getPrice());
+                }
+            }
+
+
+            System.out.print("Do you have another item? Enter N or No for No, anything else for yes: ");
+            tempInput = scnr.nextLine();
+        }
+
+        grocery.getProductList();
+        int count = ids.size();
+        for (int i = 0; i < count; i++) {
+            for (Product product : ProductList.getInstance().getProductList()) {
+                if (product.getID() == ids.get(i)) {
+                    System.out.println(product.getName() + quantities.get(i) + product.getPrice() + Double.parseDouble(product.getPrice()) * quantities.get(i));
+                    product.setQuantity(String.valueOf(Integer.parseInt(product.getQuantity()) - quantities.get(i)));
+                    /* Need to reorder twice the reorder level for any product whose level reaches the reorder level */
+                }
+            }
+        }
+        System.out.println("Total: " + total);
 	}
 
 
