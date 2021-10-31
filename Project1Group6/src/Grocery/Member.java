@@ -12,7 +12,7 @@ public class Member {
 	Calendar dateJoined;
 	String feePaid;
 	int memberID;
-	private static int idCounter = 456;
+	private static int idCounter = 0;
 
 	public Member(String name, String address, String phoneNumber,
 			Calendar dateJoined, String feePaid){
