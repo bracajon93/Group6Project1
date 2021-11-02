@@ -51,5 +51,14 @@ public class Member {
 		return memberString;
 	}
 
+	public String getDate() {
+		String dateString = "";
+		dateString += Integer.toString(dateJoined.get(Calendar.MONTH));
+		dateString += "/";
+		dateString += Integer.toString(dateJoined.get(Calendar.DAY_OF_MONTH));
+		dateString += "/";
+		dateString += Integer.toString(dateJoined.get(Calendar.YEAR));
+		return dateString;
+	}
 
 }

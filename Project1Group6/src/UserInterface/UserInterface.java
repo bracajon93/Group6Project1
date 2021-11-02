@@ -1,15 +1,24 @@
-package Grocery;
+package UserInterface;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
 import java.util.StringTokenizer;
+
+import CollectionClasses.MemberList;
+import CollectionClasses.ProductList;
+import Grocery.Grocery;
+import Grocery.Member;
+import Grocery.Order;
+import Grocery.Product;
+import Grocery.Transaction;
 
 import java.io.BufferedReader;
 
@@ -34,7 +43,10 @@ public class UserInterface {
     private static final int SHOW_PRODUCTS = 12;
     private static final int SAVE = 13;
     private static final int HELP = 14;
-
+    
+    
+    //to ask member to automatically generate a test bed or not
+    //retrieve 'exisiting' saved file
     private UserInterface() {
         if (yesOrNo("Look for saved data and  use it?")) {
             retrieve();
@@ -44,6 +56,7 @@ public class UserInterface {
 
     }
 
+    //creates an instance of our UI
     public static UserInterface instance() {
         if (userInterface == null) {
             return userInterface = new UserInterface();
@@ -52,6 +65,7 @@ public class UserInterface {
         }
     }
 
+    //to read in strings throughout program
     public String getToken(String prompt) {
         do {
             try {
@@ -137,7 +151,8 @@ public class UserInterface {
             cnfe.printStackTrace();
         }
     }
-
+    
+    //menu print out
     public void help() {
         System.out.println("Enter a number between 0 and 12 as explained below:");
         System.out.println(EXIT + " to Exit\n");
@@ -156,7 +171,8 @@ public class UserInterface {
         System.out.println(SAVE + " to  save data");
         System.out.println(HELP + " for help");
     }
-
+    
+    //switch menu 
     public void process() {
         int command;
         help();
@@ -175,6 +191,7 @@ public class UserInterface {
                 check_out();
                 break;
             case PROCESS_SHIPMENT:
+            	//process_shipment();
                 break;
             case CHANGE_PRICE:
                 change_price();
@@ -206,105 +223,114 @@ public class UserInterface {
             }
         }
     }
-
-    private void show_products() {
-        grocery.getProductList();
-        for (Product product : ProductList.getInstance().getProductList()) {
-            System.out.println("Product: " + product.getName() + "\nID: " + product.getID() + "\nQuantity: "
-                    + product.getQuantity() + "\nPrice: " + product.getPrice() + "\nReorder level: "
-                    + product.getReorderLevel());
-            System.out.println(); /* don't delete */
-        }
-    }
-
-    private void show_members() {
-        grocery.getMemberList();
-        for (Member member : MemberList.getInstance().getMembers()) {
-            System.out.println("Name: " + member.getName() + "\nDate joined: " + member.dateJoined.toString()
-                    + "\nAddress: " + member.address + "\nPhone number: " + member.phoneNumber);
-        }
-    }
-
-    private void outstanding_orders() {
-    }
-
-    private void print_transactions() {
-    }
-
-    private void member_info() {
-        String searchMemberString = getToken("Search for : ");
-        grocery.getMemberList();
-        for (Member member : MemberList.getInstance().getMembers()) {
-            if (member.getName().startsWith(searchMemberString)) {
-                System.out.println("Name: " + member.getName() + "\nDate joined: " + member.dateJoined.toString()
-                        + "\nAddress: " + member.address + "\nPhone number: " + member.phoneNumber);
-            }
-        }
+    
+ // case 1
+    private void add_member() {
+        Member result;
+        String name = getToken("Enter members name: ");
+        String address = getToken("Enter the address of the new member: ");
+        String phoneNumber = getToken("Enter the phone number of the new member: ");
+        Calendar dateJoined = getDate("Enter the date joined of the new member: ");
+        String feePaid = getToken("Enter the fee paid for the new member:");
+        result = Grocery.addMember(name, address, phoneNumber, dateJoined, feePaid);
+        System.out.println("New member " + result.getName() + " added successfully.");
+        System.out.println("Member ID is " + result.getID());
 
     }
+    
+    // case 2
+    private void remove_member() {
+        System.out.println("Enter the Member ID to be remove:");
+        int searchMemberID = scnr.nextInt();
+        String result = Grocery.removeMember(searchMemberID);
+        System.out.println(result);
+    }
+    
+    // case 3
+    private void add_product() {
+        String name = getToken("Enter the name of the product:");
+        int quantity = getNumber("Enter the quantity (int) of the product:");
+        String price = getToken("Enter the price (can be a floating point number) of the product:");
+        int reorderLevel = getNumber(
+                "Enter the minimum quantity for the product before it is automatically reordered:");
+        Product result = Grocery.addProduct(name, quantity, price, reorderLevel);
+        System.out.println("New product " + result.getName() + " added successfully.");
 
+    }
+    
+    //use case 4    
     private void check_out() {
-        String tempInput;
-        int tempId;
-        int tempQuantity;
-        ArrayList<Integer> ids = new ArrayList<>();
-        ArrayList<Integer> quantities = new ArrayList<>();
-        double price = 0;
-        double total = 0;
-
-        tempInput = "Y";
-        while (!tempInput.equals("No") || !tempInput.equals("N")) {
-
-            System.out.print("What is the id of the product: ");
-            tempId = scnr.nextInt();
-
-            grocery.getProductList();
-            for (Product product : ProductList.getInstance().getProductList()) {
-                if (product.getID() == tempId) {
-                    ids.add(tempId);
-                    System.out.println("How many " + product.getName() + " do you have?");
-                    tempQuantity = scnr.nextInt();
-                    quantities.add(tempQuantity);
-                    total += tempQuantity * Double.parseDouble(product.getPrice());
-                }
-            }
-
-            System.out.print("Do you have another item? Enter N or No for No, anything else for yes: ");
-            tempInput = scnr.nextLine();
-        }
-
-        grocery.getProductList();
-        int count = ids.size();
-        for (int i = 0; i < count; i++) {
-            for (Product product : ProductList.getInstance().getProductList()) {
-                if (product.getID() == ids.get(i)) {
-                    System.out.println(product.getName() + quantities.get(i) + product.getPrice()
-                            + Double.parseDouble(product.getPrice()) * quantities.get(i));
-                    product.setQuantity(String.valueOf(Integer.parseInt(product.getQuantity()) - quantities.get(i)));
-                    /*
-                     * Need to reorder twice the reorder level for any product whose level reaches
-                     * the reorder level
-                     */
-                }
-            }
-        }
-        System.out.println("Total: " + total);
+    	int memberID = -1;
+    	double grandTotal = 0;
+    	String transactionInvoice = "";
+    	Calendar date = getDate("Enter transaction date: ");
+    	//try method to verify member ID is valid
+    	try {
+    	int searchMemberID = getNumber("Enter Member's ID: ");
+    	String result = Grocery.verifyMemberID(searchMemberID);
+    	memberID = searchMemberID;
+    	System.out.println(result);
+    	}catch(Exception e) {
+    		System.out.println("Member ID invalid");
+    	}
+    	int numberOfProducts = getNumber("Enter number of products to check out: ");
+    	ArrayList<Order> orders = null;
+    	for(int i=0; i < numberOfProducts; i++) {
+    		double total;
+    		boolean valid = true;
+    		int productID = 0;
+    		int quantityCheckingOut = 0;
+    		Product product = null;
+    		while(valid) {
+    		try {
+    		int searchProductID = getNumber("Enter product ID: ");
+    		String result = Grocery.verifyProductID(searchProductID);
+    		product = Grocery.getProduct(searchProductID);
+    		System.out.println(result);
+    		productID = searchProductID;
+    		try {
+    			int verifyQuantity = getNumber("Enter quantity: ");
+    			String result2 = Grocery.verifyQuantity(productID, verifyQuantity);
+    			Order result3 = Grocery.checkReorderLevel(productID, verifyQuantity);
+    			orders.add(result3);
+    			System.out.println(result2);
+    			quantityCheckingOut = verifyQuantity;
+    			total = Grocery.getTotal(productID, quantityCheckingOut);
+        		grandTotal+= total;
+        		DecimalFormat twoDForm = new DecimalFormat("#.##");
+        		Double.valueOf(twoDForm.format(grandTotal));
+        		String itemResultString = " ";
+        		itemResultString = product.getName() + " " + Integer.toString(quantityCheckingOut) + " " + 
+        				(twoDForm.format(total) + " " + twoDForm.format(grandTotal));
+        		System.out.println(itemResultString);
+        		transactionInvoice += itemResultString;
+        		Transaction result4 = Grocery.createTransaction(date, transactionInvoice, memberID);
+        		valid = false;
+    		}catch(Exception e) {
+    			System.out.println("Quantity entered unavailable.");
+    			valid = false;
+    		}
+    		
+    		}catch (Exception e){
+    			System.out.println("Product ID invalid: ");
+    			valid = false;
+    		}
+    		}
+    		Transaction result4 = Grocery.createTransaction(date, transactionInvoice, memberID);
+    		
+    	}
+    	
+    	
     }
-
-    private void product_info() {
-        System.out.println("What should we be searching for?");
-        String tempString = scnr.nextLine();
-        grocery.getProductList();
-        for (Product product : ProductList.getInstance().getProductList()) {
-            if (product.getName().startsWith(tempString)) {
-                System.out.println("Product: " + product.getName() + "\nID: " + product.getID() + "\nQuantity: "
-                        + product.getQuantity() + "\nPrice: " + product.getPrice() + "\nReorder level: "
-                        + product.getReorderLevel());
-                System.out.println();
-            }
-        }
-    }
-
+    
+    /*use case 5
+    private void process_shipment() {
+    	
+    	
+	}
+	*/
+    
+    //use case 6
     private void change_price() {
         System.out.println("Enter the ID of the product :");
         int searchProductID = scnr.nextInt();
@@ -318,40 +344,69 @@ public class UserInterface {
             System.out.println("Item not found.");
         }
     }
-
-    // case 3
-    private void add_product() {
-        String name = getToken("Enter the name of the product:");
-        String quantity = getToken("Enter the quantity (int) of the product:");
-        String price = getToken("Enter the price (can be a floating point number) of the product:");
-        String reorderLevel = getToken(
-                "Enter the minimum quantity for the product before it is automatically reordered:");
-        Product result = Grocery.addProduct(name, quantity, price, reorderLevel);
-        System.out.println("New product " + result.getName() + " added successfully.");
+    
+  //use case 7
+    private void product_info() {
+        System.out.println("What should we be searching for?");
+        String tempString = scnr.nextLine();
+        grocery.getProductList();
+        for (Product product : ProductList.getInstance().getProductList()) {
+            if (product.getName().startsWith(tempString)) {
+                System.out.println("Product: " + product.getName() + "\nID: " + product.getID() + "\nQuantity: "
+                        + product.getQuantity() + "\nPrice: " + product.getPrice() + "\nReorder level: "
+                        + product.getReorderLevel());
+                System.out.println();
+            }
+        }
+    }
+    
+    //use case 8
+    private void member_info() {
+        String searchMemberString = getToken("Search for : ");
+        grocery.getMemberList();
+        grocery.member_info(searchMemberString);
 
     }
-
-    // case 1
-    private void add_member() {
-        Member result;
-        String name = getToken("Enter members name: ");
-        String address = getToken("Enter the address of the new member: ");
-        String phoneNumber = getToken("Enter the phone number of the new member: ");
-        Calendar dateJoined = getDate("Enter the date joined of the new member: ");
-        String feePaid = getToken("Enter the fee paid for the new member:");
-        result = Grocery.addMember(name, address, phoneNumber, dateJoined, feePaid);
-        System.out.println("New member " + result.getName() + " added successfully.");
-        System.out.println("Member ID is " + result.getID());
-
+    
+    //use case 9
+    private void print_transactions() {
+    	try {
+    	int searchMemberID = getNumber("Enter Member's ID: ");
+    	String result = Grocery.verifyMemberID(searchMemberID);
+    	System.out.println(result);
+    	Calendar date1 = getDate("Enter first date: ");
+    	Calendar date2 = getDate("Enter second date: ");
+    	int comparison = date1.compareTo(date2);
+    	if (comparison <= 0) {
+			grocery.showTransactions(searchMemberID, date1, date2);
+    	}else {
+    		System.out.println("First date is invalid, occurs after 2nd date.");
+    	}
+    	}catch(Exception e) {
+    		System.out.println("Member ID invalid");
+    	}
     }
-
-    // case 2
-    private void remove_member() {
-        System.out.println("Enter the Member ID to be remove:");
-        int searchMemberID = scnr.nextInt();
-        String result = Grocery.removeMember(searchMemberID);
-        System.out.println(result);
+    
+    //use case 10
+    private void outstanding_orders() {
+    	grocery.outstandingOrders();
     }
+    
+    //use case 11
+    private void show_members() {
+        grocery.showMembers();
+    }
+    
+    //use case 12
+  	private void show_products() {
+          grocery.getProductList();
+          for (Product product : ProductList.getInstance().getProductList()) {
+              System.out.println("Product: " + product.getName() + "\nID: " + product.getID() + "\nQuantity: "
+                      + product.getQuantity() + "\nPrice: " + product.getPrice() + "\nReorder level: "
+                      + product.getReorderLevel());
+              System.out.println(); /* don't delete */
+          }
+      }
 
     public static void main(String[] args) {
         UserInterface.instance().process();

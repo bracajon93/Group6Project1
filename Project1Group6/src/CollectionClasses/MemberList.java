@@ -1,9 +1,11 @@
-package Grocery;
+package CollectionClasses;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
+import Grocery.Member;
 
 
 public class MemberList {
@@ -54,7 +56,7 @@ public class MemberList {
 	}
 
 	public static void removeMember(Member member) {
-		
+		memberList.remove(member);
 	}
 
 }

@@ -1,10 +1,12 @@
-package Grocery;
+package CollectionClasses;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
+
+import Grocery.Product;
 /**
  * This class is a singleton, with an arrayList that holds all the instances of
  * Product for our co-op system
@@ -44,7 +46,7 @@ public class ProductList {
 		for (Iterator<Product> iterator = productList.iterator(); iterator.hasNext();) {
             Product product = iterator.next();
             if (product.getID() == (searchProductID)) {
-                product.setPrice((String)updatePrice);
+                product.setPrice(updatePrice);
                 return  product;
             }
 		}
